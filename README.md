@@ -191,7 +191,7 @@ node test-api-e2e.js
 
 ## 📸 Product Walkthrough & UI Screenshots
 
+<img width="1257" height="847" alt="image" src="https://github.com/user-attachments/assets/91e33e96-e3ac-4afa-858b-5bd525375c65" />
 
-| ![Watchlist Overview](./assets/screenshot_watchlist.png) | 
 
 
