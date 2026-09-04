@@ -15,5 +15,6 @@ Inspired by Groww's core philosophy—making finance simple, responsible, and tr
 
 ## Full Tech Stack
 
-![Smart Market Watchlist Architecture](./watchlist_architecture.svg)
+![Smart Market Watchlist Architecture](![Uploading image.png…]()
+)
 
