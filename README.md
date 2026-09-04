@@ -19,16 +19,40 @@ Inspired by Groww's core philosophy—making finance simple, responsible, and tr
 
 ![Smart Market Watchlist Architecture](./assets/watchlist_architecture.svg)
 
-- **Frontend:** React 18 (Single Page Application via functional components & hooks) built with Vite 5. Styled with custom Vanilla CSS inspired by Groww's clean fintech aesthetic (soft rounded cards, Groww brand blue `#4447ff`, emerald `#00b386` for gains, rose `#eb5b3c` for losses), accompanied by `lucide-react` iconography.
-- **Backend API:** Node.js + Express 4.21 configured with native ES Modules (`"type": "module"`), modular REST routes, CORS middleware, and unified static production asset serving.
-- **Data Ingestion Engine:**
-  - **Primary Live Feed:** `yahoo-finance2` (v4.0.2) querying real NSE tickers (`TCS.NS`, `INFY.NS`, `RELIANCE.NS`, `HDFCBANK.NS`, `WIPRO.NS`) with an 8-second concurrent timeout race.
-  - **Automatic Fallback Simulator:** Per-symbol geometric random-walk simulator with ~5% news-jump probability that seamlessly activates when live APIs hit rate limits (e.g. HTTP 429) or network timeouts.
-- **Persistence Layer:** SQLite 3 powered by `better-sqlite3` (v11.8.1). Configured with `PRAGMA journal_mode = WAL` (Write-Ahead Logging) for non-blocking concurrent reads during tick writes, foreign keys enabled, and composite indexing across `(symbol, timestamp)`.
-- **Testing & Verification:** Native Node.js test assert runner (`node:assert`) without external testing bloat, running 3 complete test suites covering unit calculations, live API fallback resilience, and REST API lifecycles.
-- **Production Deployment:** Deployed as a single unified service on Render.com (`AUTO_RUN_PROVIDER=true`), executing background price ingestion and serving both the API and precompiled React frontend.
+## Full Tech Stack
 
----
+- **Frontend:** React 18 (functional components & hooks), built with Vite 5. Custom vanilla CSS in a Groww-inspired fintech style — soft rounded cards, emerald `#00b386` for gains, rose `#eb5b3c` for losses. Icons via `lucide-react`.
+
+- **Backend API:** Node.js + Express 4.21, native ES Modules (`"type": "module"`). Modular REST routes, CORS middleware, and unified static serving for both API and frontend.
+
+- **Data Ingestion Engine:**
+  - *Live feed:* `yahoo-finance2` (v4.0.2) pulling real NSE tickers (`TCS.NS`, `INFY.NS`, `RELIANCE.NS`, `HDFCBANK.NS`, `WIPRO.NS`) with an 8-second concurrent timeout.
+  - *Fallback:* per-symbol geometric random-walk simulator (~5% news-jump probability) that activates automatically on rate limits (HTTP 429) or timeouts.
+
+- **Persistence Layer:** SQLite 3 via `better-sqlite3` (v11.8.1). `PRAGMA journal_mode = WAL` for non-blocking concurrent reads during writes, foreign keys enabled, composite index on `(symbol, timestamp)`.
+
+- **Testing & Verification:** Native `node:assert` runner, no external test framework. 3 suites covering unit calculations, live-API fallback resilience, and REST API lifecycle.
+
+- **Production Deployment:** Single unified service on Render.com (`AUTO_RUN_PROVIDER=true`), running background price ingestion alongside the API and precompiled React frontend.
+
+## 🏗 Architecture
+
+The system is a five-stage pipeline — raw market data flows in one end, 
+a contextual, ranked watchlist comes out the other.
+
+![Smart Market Watchlist Architecture](./assets/watchlist_arch.svg)
+
+1. **Dual Ingestion** — Live NSE quotes via `yahoo-finance2`, racing an 8-second 
+   timeout against zero-downtime automatic fallback to a local simulator.
+2. **Data Refinery** — Sanitizes the incoming stream: rejects non-positive prices, 
+   negative volumes, and duplicate timestamps before anything touches storage.
+3. **Persistent Storage** — SQLite 3 in WAL mode, with atomic batch transactions 
+   so reads stay non-blocking even during active writes.
+4. **Volatility Brain** — Normalizes each move against the stock's own 7-day 
+   volatility baseline ($\text{change\_score} = |\Delta P| / \sigma_{7d}$) and 
+   flags volume anomalies ($>2\times$ average).
+5. **Groww-Style UI** — A responsive React frontend that surfaces only what's 
+   meaningful — outliers sorted to the top, each with a plain-English explanation.
 
 ## 💡 "Why This Exists" — Product & Problem Interpretation 
 
@@ -55,7 +79,7 @@ When approaching Groww's open-ended prompt, I established three foundational pro
 2. **Time-Anchored Delta (User-Centric vs. Market-Centric):** Traditional apps measure percentage change strictly from 9:15 AM market open. But if an investor checks the app at 11:00 AM, returns at 2:30 PM, they don't care about what happened at 10:00 AM. They need to know what transpired **during their absence**. State must persist across visits, establishing a personalized baseline snapshot (`last_viewed_at` and `price_at_last_view`).
 3. **Explainable AI/Logic:** Black-box scores alienate users. If a stock is highlighted, the app must explain the mathematical rationale in plain English.
 
----
+
 
 ## 📐 The Mathematical Framework: Meaningful Change Engine
 
@@ -89,7 +113,7 @@ The engine outputs human-readable rationales directly into the user interface:
 - *"Within normal range (+0.35% vs 0.3% avg move)"*
 - *"Unchanged since last check"*
 
----
+
 
 ## 🛡 Engineering Depth, Edge Cases & Resilience 
 
@@ -101,7 +125,7 @@ The engine outputs human-readable rationales directly into the user interface:
 | **New Stocks with Zero Historical Baseline** | If a user adds a newly tracked symbol with no historical ticks, the engine handles the boundary condition safely by returning `change_score: 0` and `"No prior view comparison yet"`, preventing `NaN` or application crashes. |
 | **Database Lock Contention** | Standard SQLite can lock during simultaneous reads and writes. Enabling `PRAGMA journal_mode = WAL` allows readers to proceed concurrently without blocking tick writes. |
 
----
+
 
 ## ⚖ Engineering Trade-offs: What We Did vs. What We'd Do Next
 
@@ -114,7 +138,7 @@ The engine outputs human-readable rationales directly into the user interface:
 3. **Pure Function Engine Isolation:**
    - *Current Decision:* Decoupled the mathematical formula (`calculateMeaningfulChange`) completely from SQLite and Express, enabling 17 unit tests to execute deterministically in milliseconds without mocking databases.
 
----
+
 
 ## 🚀 Quickstart & Verification Guide
 
@@ -165,7 +189,7 @@ node test-live-provider.js
 node test-api-e2e.js
 ```
 
----
+
 
 ## 📡 API Reference
 
