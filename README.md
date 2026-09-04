@@ -191,8 +191,7 @@ node test-api-e2e.js
 
 ## 📸 Product Walkthrough & UI Screenshots
 
-| Watchlist Overview & Meaningful Badges | Since You Last Checked Summary |
-| :---: | :---: |
+
 | ![Watchlist Overview](./assets/screenshot_watchlist.png) | 
 
 
