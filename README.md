@@ -30,7 +30,7 @@ Inspired by Groww's core philosophy—making finance simple, responsible, and tr
 
 ---
 
-## 💡 "Why This Exists" — Product & Problem Interpretation (Rubric #2)
+## 💡 "Why This Exists" — Product & Problem Interpretation 
 
 ### 1. Market Analysis: Why Did Groww Pose This Challenge?
 Over the past five years, retail market participation in India has exploded. Millions of users open their broker app multiple times a day. However, financial interfaces have largely remained unchanged for decades: a static list of tickers displaying raw prices and 1-day percentage fluctuations.
@@ -91,7 +91,7 @@ The engine outputs human-readable rationales directly into the user interface:
 
 ---
 
-## 🛡 Engineering Depth, Edge Cases & Resilience (Rubric #1 & #3)
+## 🛡 Engineering Depth, Edge Cases & Resilience 
 
 | Potential Failure Mode | How the System Defends Against It |
 |---|---|
