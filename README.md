@@ -97,11 +97,11 @@ change_score = | raw_pct_change | / avg_daily_move
 volume_ratio = V_current / avg_V_7d
 
 
-If `volume_ratio ≥ 2.0`, the stock triggers a **🔥 Volume Surge** flag, regardless of price magnitude.
+If `volume_ratio ≥ 2.0`, the stock triggers a ** Volume Surge** flag, regardless of price magnitude.
 
 
 
-## Engineering Depth, Edge Cases & Resilience 
+##  Resilience & Failure Handling
 
 | Potential Failure Mode | How the System Defends Against It |
 |---|---|
@@ -113,7 +113,7 @@ If `volume_ratio ≥ 2.0`, the stock triggers a **🔥 Volume Surge** flag, rega
 
 
 
-## Engineering Trade-offs: What We Did vs. What We'd Do Next
+## ⚖ Trade-offs & Roadmap
 
 1. **Embedded SQLite vs. Distributed PostgreSQL:**
    - *Current Decision:* SQLite with WAL mode was chosen for zero network latency, instant local testing, and zero external dependency risk during a 72-hour build challenge.
