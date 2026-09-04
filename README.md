@@ -1,4 +1,4 @@
-# Smart Market Watchlist
+<img width="1236" height="836" alt="image" src="https://github.com/user-attachments/assets/79d99d25-7a6d-4485-8730-1a7517a7aaa0" /># Smart Market Watchlist
 
 🌐 **[Live Demo](https://smart-market-watchlist-klvd.onrender.com/)**
 
@@ -187,3 +187,12 @@ node test-api-e2e.js
 | `POST` | `/watchlist/viewed` | Acknowledges and updates the `last_viewed` baseline snapshot for all tracked stocks |
 | `POST` | `/watchlist/:symbol/viewed` | Updates the baseline snapshot for a single stock |
 | `GET` | `/api/health` | Uptime and system health check |
+
+
+## 📸 Product Walkthrough & UI Screenshots
+
+| Watchlist Overview & Meaningful Badges | Since You Last Checked Summary |
+| :---: | :---: |
+| ![Watchlist Overview](./assets/screenshot_watchlist.png) | 
+
+
