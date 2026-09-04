@@ -1,0 +1,125 @@
+{
+  "info": {
+    "name": "Smart Market Watchlist API",
+    "description": "Collection for testing Smart Market Watchlist CRUD, Meaningful Change detection, and Viewed endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/health",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "health"]
+        }
+      }
+    },
+    {
+      "name": "Get Watchlist (with Meaningful Change)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/watchlist",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["watchlist"]
+        }
+      }
+    },
+    {
+      "name": "Add Stock (TCS)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"symbol\": \"TCS\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/watchlist",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["watchlist"]
+        }
+      }
+    },
+    {
+      "name": "Add Stock (INFY)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"symbol\": \"INFY\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/watchlist",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["watchlist"]
+        }
+      }
+    },
+    {
+      "name": "Mark Single Stock Viewed (/viewed)",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/watchlist/INFY/viewed",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["watchlist", "INFY", "viewed"]
+        }
+      }
+    },
+    {
+      "name": "Mark All Viewed (/viewed)",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/watchlist/viewed",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["watchlist", "viewed"]
+        }
+      }
+    },
+    {
+      "name": "Remove Stock (TCS)",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/watchlist/TCS",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["watchlist", "TCS"]
+        }
+      }
+    }
+  ]
+}

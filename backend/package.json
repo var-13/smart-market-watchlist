@@ -1,0 +1,20 @@
+{
+  "name": "smart-market-watchlist-backend",
+  "version": "1.0.0",
+  "description": "Backend for Smart Market Watchlist app",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "simulator": "node simulator.js",
+    "live": "node livePrice.js",
+    "db:init": "node src/db/init-db.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.8.1",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "yahoo-finance2": "^4.0.2"
+  }
+}
+
