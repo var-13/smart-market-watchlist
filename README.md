@@ -21,7 +21,7 @@ Inspired by Groww's core philosophy—making finance simple, responsible, and tr
 
 ## Full Tech Stack
 
-- **Frontend:** React 18 (functional components & hooks), built with Vite 5. Custom vanilla CSS in a Groww-inspired fintech style — soft rounded cards, emerald `#00b386` for gains, rose `#eb5b3c` for losses. Icons via `lucide-react`.
+- **Frontend:** React 18 (functional components & hooks), built with Vite 5. Custom vanilla CSS in a Groww-inspired fintech style — soft rounded cards, emerald  for gains, rose  for losses. Icons via `lucide-react`.
 - **Backend API:** Node.js + Express 4.21, native ES Modules (`"type": "module"`). Modular REST routes, CORS middleware, and unified static serving for both API and frontend.
 - **Data Ingestion Engine:**
   - *Live feed:* `yahoo-finance2` (v4.0.2) pulling real NSE tickers (`TCS.NS`, `INFY.NS`, `RELIANCE.NS`, `HDFCBANK.NS`, `WIPRO.NS`) with an 8-second concurrent timeout.
