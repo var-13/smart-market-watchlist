@@ -1,5 +1,7 @@
 # Smart Market Watchlist
 
+🌐 **[Live Demo](https://smart-market-watchlist-klvd.onrender.com/)** ·
+
 A contextual stock watchlist designed around how retail investors actually process market shifts. Traditional watchlists flash uncontextualized green and red percentages, leaving users to guess whether a 2% move is routine noise or an exceptional event. This project builds an end-to-end platform that computes baseline volatility for each asset and alerts users only when price action or trading volume breaks out of historical norms.
 
 | Resource | Link / Detail | Status |
