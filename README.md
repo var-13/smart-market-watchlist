@@ -1,4 +1,4 @@
-<img width="1236" height="836" alt="image" src="https://github.com/user-attachments/assets/79d99d25-7a6d-4485-8730-1a7517a7aaa0" /># Smart Market Watchlist
+# Smart Market Watchlist
 
 🌐 **[Live Demo](https://smart-market-watchlist-klvd.onrender.com/)**
 
