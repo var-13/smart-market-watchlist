@@ -7,7 +7,14 @@ import watchlistRouter from './routes/watchlist.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const frontendDist = path.resolve(__dirname, '../../../frontend/dist');
+
+// Check candidate paths to support both root CWD and backend CWD
+const candidatePaths = [
+  path.resolve(__dirname, '../../frontend/dist'),
+  path.resolve(process.cwd(), 'frontend/dist'),
+  path.resolve(process.cwd(), '../frontend/dist'),
+];
+const frontendDist = candidatePaths.find(p => fs.existsSync(p)) || candidatePaths[0];
 
 const app = express();
 const PORT = process.env.PORT || 5000;
