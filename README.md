@@ -1,15 +1,16 @@
-# 📈 Smart Market Watchlist
+# Smart Market Watchlist
 
-> **Groww CODE 2026 Engineering Build Challenge**  
-> An intelligent, volatility-normalized stock watchlist that detects and explains **meaningful market changes** since a user's last visit.
+A contextual stock watchlist designed around how retail investors actually process market shifts. Traditional watchlists flash uncontextualized green and red percentages, leaving users to guess whether a 2% move is routine noise or an exceptional event. This project builds an end-to-end platform that computes baseline volatility for each asset and alerts users only when price action or trading volume breaks out of historical norms.
 
-[![Live Demo](https://img.shields.io/badge/Live_Demo-onrender.com-00b386?style=for-the-badge&logo=render&logoColor=white)](https://smart-market-watchlist-klvd.onrender.com)
-[![Tests](https://img.shields.io/badge/Tests-17%2F17%20Passed-brightgreen?style=for-the-badge&logo=checkmarx&logoColor=white)](https://github.com/var-13/smart-market-watchlist#automated-verification--test-commands)
-[![React](https://img.shields.io/badge/Frontend-React%20%2B%20Vite-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev)
-[![Node.js](https://img.shields.io/badge/Backend-Node.js%20%2B%20Express-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org)
-[![SQLite](https://img.shields.io/badge/Database-SQLite%20(WAL%20Mode)-003B57?style=for-the-badge&logo=sqlite&logoColor=white)](https://sqlite.org)
-
-🌐 **Live Deployment:** [https://smart-market-watchlist-klvd.onrender.com](https://smart-market-watchlist-klvd.onrender.com)  
-📁 **GitHub Repository:** [https://github.com/var-13/smart-market-watchlist](https://github.com/var-13/smart-market-watchlist)
+| Resource | Link / Detail | Status |
+| :--- | :--- | :--- |
+| **Live Product** | [smart-market-watchlist-klvd.onrender.com](https://smart-market-watchlist-klvd.onrender.com) | `Online` |
+| **Source Code** | [github.com/var-13/smart-market-watchlist](https://github.com/var-13/smart-market-watchlist) | `Public` |
+| **Automated Tests** | 17 unit & resilience test cases | `100% Passing` |
+| **Tech Architecture** | React 18 · Node.js Express · SQLite (WAL mode) | `Production Build` |
 
 ---
+
+## 100-Word Product Pitch
+
+Inspired by Groww’s core philosophy—making finance simple, responsible, and transparent—I built the Smart Market Watchlist to replace raw market noise with actionable context. Most retail investors struggle to interpret whether a daily percentage move matters. By pairing each stock with its 7-day volatility baseline and volume metrics, the system calculates a normalized `change_score` since the user’s last visit. Built end-to-end with React and Node.js/SQLite, it delivers plain-English explanations, dual live/simulated feeds, and persistent visit tracking. It empowers everyday investors to focus only on what truly deserves their attention.
