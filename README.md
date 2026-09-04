@@ -30,7 +30,7 @@ Inspired by Groww's core philosophy—making finance simple, responsible, and tr
 - **Testing & Verification:** Native `node:assert` runner, no external test framework. 3 suites covering unit calculations, live-API fallback resilience, and REST API lifecycle.
 - **Production Deployment:** Single unified service on Render.com (`AUTO_RUN_PROVIDER=true`), running background price ingestion alongside the API and precompiled React frontend.
 
-## 🏗 Architecture
+##  Architecture
 
 The system is a five-stage pipeline — raw market data flows in one end, a contextual, ranked watchlist comes out the other.
 
@@ -67,7 +67,7 @@ When approaching Groww's open-ended prompt, I established three foundational pro
 2. **Time-Anchored Delta (User-Centric vs. Market-Centric):** Traditional apps measure percentage change strictly from 9:15 AM market open. But if an investor checks the app at 11:00 AM, returns at 2:30 PM, they don't care about what happened at 10:00 AM. They need to know what transpired **during their absence**. State must persist across visits, establishing a personalized baseline snapshot (`last_viewed_at` and `price_at_last_view`).
 3. **Explainable AI/Logic:** Black-box scores alienate users. If a stock is highlighted, the app must explain the mathematical rationale in plain English.
 
-## 📐 Mathematical Formulas
+##  Mathematical Formulas
 
 ### 1. Raw Percentage Change
 
@@ -113,7 +113,7 @@ If `volume_ratio ≥ 2.0`, the stock triggers a ** Volume Surge** flag, regardle
 
 
 
-## ⚖ Trade-offs & Roadmap
+## Trade-offs & Roadmap
 
 1. **Embedded SQLite vs. Distributed PostgreSQL:**
    - *Current Decision:* SQLite with WAL mode was chosen for zero network latency, instant local testing, and zero external dependency risk during a 72-hour build challenge.
