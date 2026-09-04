@@ -22,37 +22,25 @@ Inspired by Groww's core philosophy—making finance simple, responsible, and tr
 ## Full Tech Stack
 
 - **Frontend:** React 18 (functional components & hooks), built with Vite 5. Custom vanilla CSS in a Groww-inspired fintech style — soft rounded cards, emerald `#00b386` for gains, rose `#eb5b3c` for losses. Icons via `lucide-react`.
-
 - **Backend API:** Node.js + Express 4.21, native ES Modules (`"type": "module"`). Modular REST routes, CORS middleware, and unified static serving for both API and frontend.
-
 - **Data Ingestion Engine:**
   - *Live feed:* `yahoo-finance2` (v4.0.2) pulling real NSE tickers (`TCS.NS`, `INFY.NS`, `RELIANCE.NS`, `HDFCBANK.NS`, `WIPRO.NS`) with an 8-second concurrent timeout.
   - *Fallback:* per-symbol geometric random-walk simulator (~5% news-jump probability) that activates automatically on rate limits (HTTP 429) or timeouts.
-
 - **Persistence Layer:** SQLite 3 via `better-sqlite3` (v11.8.1). `PRAGMA journal_mode = WAL` for non-blocking concurrent reads during writes, foreign keys enabled, composite index on `(symbol, timestamp)`.
-
 - **Testing & Verification:** Native `node:assert` runner, no external test framework. 3 suites covering unit calculations, live-API fallback resilience, and REST API lifecycle.
-
 - **Production Deployment:** Single unified service on Render.com (`AUTO_RUN_PROVIDER=true`), running background price ingestion alongside the API and precompiled React frontend.
 
 ## 🏗 Architecture
 
-The system is a five-stage pipeline — raw market data flows in one end, 
-a contextual, ranked watchlist comes out the other.
+The system is a five-stage pipeline — raw market data flows in one end, a contextual, ranked watchlist comes out the other.
 
 ![Smart Market Watchlist Architecture](./assets/watchlist_arch.svg)
 
-1. **Dual Ingestion** — Live NSE quotes via `yahoo-finance2`, racing an 8-second 
-   timeout against zero-downtime automatic fallback to a local simulator.
-2. **Data Refinery** — Sanitizes the incoming stream: rejects non-positive prices, 
-   negative volumes, and duplicate timestamps before anything touches storage.
-3. **Persistent Storage** — SQLite 3 in WAL mode, with atomic batch transactions 
-   so reads stay non-blocking even during active writes.
-4. **Volatility Brain** — Normalizes each move against the stock's own 7-day 
-   volatility baseline ($\text{change\_score} = |\Delta P| / \sigma_{7d}$) and 
-   flags volume anomalies ($>2\times$ average).
-5. **Groww-Style UI** — A responsive React frontend that surfaces only what's 
-   meaningful — outliers sorted to the top, each with a plain-English explanation.
+1. **Dual Ingestion** — Live NSE quotes via `yahoo-finance2`, racing an 8-second timeout against zero-downtime automatic fallback to a local simulator.
+2. **Data Refinery** — Sanitizes the incoming stream: rejects non-positive prices, negative volumes, and duplicate timestamps before anything touches storage.
+3. **Persistent Storage** — SQLite 3 in WAL mode, with atomic batch transactions so reads stay non-blocking even during active writes.
+4. **Volatility Brain** — Normalizes each move against the stock's own 7-day volatility baseline (`change_score = |ΔP| / σ_7d`) and flags volume anomalies (>2x average).
+5. **Groww-Style UI** — A responsive React frontend that surfaces only what's meaningful — outliers sorted to the top, each with a plain-English explanation.
 
 ## 💡 "Why This Exists" — Product & Problem Interpretation 
 
@@ -79,43 +67,41 @@ When approaching Groww's open-ended prompt, I established three foundational pro
 2. **Time-Anchored Delta (User-Centric vs. Market-Centric):** Traditional apps measure percentage change strictly from 9:15 AM market open. But if an investor checks the app at 11:00 AM, returns at 2:30 PM, they don't care about what happened at 10:00 AM. They need to know what transpired **during their absence**. State must persist across visits, establishing a personalized baseline snapshot (`last_viewed_at` and `price_at_last_view`).
 3. **Explainable AI/Logic:** Black-box scores alienate users. If a stock is highlighted, the app must explain the mathematical rationale in plain English.
 
+## 📐 Mathematical Formulas
+
+### 1. Raw Percentage Change
+
+raw_pct_change = ((P_current - P_baseline) / P_baseline) × 100
 
 
-## 📐 The Mathematical Framework: Meaningful Change Engine
+### 2. Average Daily Move (7-day baseline)
 
-Rather than relying on arbitrary thresholds, the system models each stock's historical volatility distribution over a rolling 7-day lookback window.
+avg_daily_move = (1 / N) × Σ | (P_close - P_open) / P_open × 100 | for i = 1 to N
 
-### 1. Volatility-Normalized Change Score
-To determine if a price move is statistically significant, we normalize the raw visit delta against the stock's own historical average daily movement:
 
-$$\text{raw\_pct\_change} = \frac{P_{\text{current}} - P_{\text{baseline}}}{P_{\text{baseline}}} \times 100$$
+### 3. Volatility-Normalized Change Score
 
-$$\text{avg\_daily\_move} = \frac{1}{N} \sum_{i=1}^{N} \left| \frac{P_{i,\text{close}} - P_{i,\text{open}}}{P_{i,\text{open}}} \right| \times 100$$
+change_score = | raw_pct_change | / avg_daily_move
 
-$$\text{change\_score} = \frac{|\text{raw\_pct\_change}|}{\text{avg\_daily\_move}}$$
 
-- **Score Interpretation:**
-  - $\text{change\_score} < 1.0$: The move is smaller than a typical day's fluctuation (routine noise).
-  - $1.0 \le \text{change\_score} \le 1.5$: Moderate movement within expected variance.
-  - $\mathbf{\text{change\_score} > 1.5}$: **Meaningful Move Alert** ($\ge 1.5\times$ typical daily volatility). The stock is automatically badged and sorted to the top.
+**Score interpretation**
 
-### 2. Volume Anomaly Detection
-Price movement without volume is often an illusion. Conversely, a quiet price move accompanied by massive volume accumulation often precedes major institutional breakouts. We evaluate volume deviation against the 7-day average:
+| Range | Meaning |
+|---|---|
+| `change_score < 1.0` | Smaller than a typical day's fluctuation — routine noise |
+| `1.0 ≤ change_score ≤ 1.5` | Moderate movement within expected variance |
+| **`change_score > 1.5`** | **Meaningful Move Alert** (≥1.5x typical daily volatility) — automatically badged and sorted to the top |
 
-$$\text{volume\_ratio} = \frac{V_{\text{current}}}{\bar{V}_{\text{7d}}}$$
+### 4. Volume Ratio
 
-- If $\text{volume\_ratio} \ge 2.0$, the stock triggers a **🔥 Volume Surge** flag, regardless of price magnitude.
+volume_ratio = V_current / avg_V_7d
 
-### 3. Natural-Language Explainability
-The engine outputs human-readable rationales directly into the user interface:
-- *"Up 4.2% — 3.5x its usual daily move of 1.2%"*
-- *"Unusual volume surge (2.8x avg) with modest price move (+0.4%)"*
-- *"Within normal range (+0.35% vs 0.3% avg move)"*
-- *"Unchanged since last check"*
+
+If `volume_ratio ≥ 2.0`, the stock triggers a **🔥 Volume Surge** flag, regardless of price magnitude.
 
 
 
-## 🛡 Engineering Depth, Edge Cases & Resilience 
+## Engineering Depth, Edge Cases & Resilience 
 
 | Potential Failure Mode | How the System Defends Against It |
 |---|---|
@@ -127,7 +113,7 @@ The engine outputs human-readable rationales directly into the user interface:
 
 
 
-## ⚖ Engineering Trade-offs: What We Did vs. What We'd Do Next
+## Engineering Trade-offs: What We Did vs. What We'd Do Next
 
 1. **Embedded SQLite vs. Distributed PostgreSQL:**
    - *Current Decision:* SQLite with WAL mode was chosen for zero network latency, instant local testing, and zero external dependency risk during a 72-hour build challenge.
@@ -140,7 +126,7 @@ The engine outputs human-readable rationales directly into the user interface:
 
 
 
-## 🚀 Quickstart & Verification Guide
+##  Quickstart & Verification Guide
 
 ### 1. Local Setup
 ```powershell
@@ -191,7 +177,7 @@ node test-api-e2e.js
 
 
 
-## 📡 API Reference
+## API Reference
 
 | Method | Endpoint | Description |
 |---|---|---|
