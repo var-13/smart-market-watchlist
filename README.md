@@ -15,11 +15,9 @@ A contextual stock watchlist designed around how retail investors actually proce
 
 Inspired by Groww's core philosophy—making finance simple, responsible, and transparent—I built the Smart Market Watchlist to replace raw market noise with actionable context. Most retail investors struggle to interpret whether a daily percentage move matters. By pairing each stock with its 7-day volatility baseline and volume metrics, the system calculates a normalized change_score since the user's last visit. Built end-to-end with React and Node.js/SQLite, it delivers plain-English explanations, dual live/simulated feeds, and persistent visit tracking. It empowers everyday investors to focus only on what truly deserves their attention.
 
+
+
 ## Tech Stack
-
-![Smart Market Watchlist Architecture](./assets/watchlist_architecture.svg)
-
-## Full Tech Stack
 
 - **Frontend:** React 18 (functional components & hooks), built with Vite 5. Custom vanilla CSS in a Groww-inspired fintech style — soft rounded cards, emerald  for gains, rose  for losses. Icons via `lucide-react`.
 - **Backend API:** Node.js + Express 4.21, native ES Modules (`"type": "module"`). Modular REST routes, CORS middleware, and unified static serving for both API and frontend.
