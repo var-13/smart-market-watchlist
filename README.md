@@ -42,7 +42,7 @@ The system is a five-stage pipeline — raw market data flows in one end, a cont
 4. **Volatility Brain** — Normalizes each move against the stock's own 7-day volatility baseline (`change_score = |ΔP| / σ_7d`) and flags volume anomalies (>2x average).
 5. **Groww-Style UI** — A responsive React frontend that surfaces only what's meaningful — outliers sorted to the top, each with a plain-English explanation.
 
-## 💡 "Why This Exists" — Product & Problem Interpretation 
+## "Why This Exists" — Product & Problem Interpretation 
 
 ### 1. Market Analysis: Why Did Groww Pose This Challenge?
 Over the past five years, retail market participation in India has exploded. Millions of users open their broker app multiple times a day. However, financial interfaces have largely remained unchanged for decades: a static list of tickers displaying raw prices and 1-day percentage fluctuations.
