@@ -1,0 +1,11 @@
+{
+  "name": "smart-market-watchlist-root",
+  "version": "1.0.0",
+  "description": "Smart Market Watchlist for Groww CODE 2026",
+  "scripts": {
+    "build": "npm run build:frontend && npm run build:backend",
+    "build:frontend": "cd frontend && npm install && npm run build",
+    "build:backend": "cd backend && npm install && npm run db:init",
+    "start": "cd backend && node src/index.js"
+  }
+}
